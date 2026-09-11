@@ -15,22 +15,28 @@ const Home = () => {
 
   const slides = [
     {
-      url: "https://pezwaan.com/cdn/shop/files/ChatGPT_Image_Jul_11_2026_11_40_33_PM.webp?v=1784655711&width=1500",
-      fallback: "https://images.unsplash.com/photo-1596783074918-c84cb06531ca?w=1600&auto=format&fit=crop&q=80",
-      title: "Summer pret '26",
-      subtitle: "Breatheable lawn & elegant silhouettes"
+      url: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=85&w=2000&auto=format&fit=crop",
+      tag: "FESTIVE COUTURE '26",
+      title: "Royal Velvet & Hand Zardozi",
+      description: "Artisanal deep maroon tones, delicate gold resham threadwork, and opulent silhouettes crafted for timeless evening grandeur.",
+      link: "/products?category=Luxury%20Pret",
+      btn: "Explore Luxury Pret"
     },
     {
-      url: "https://pezwaan.com/cdn/shop/files/YELLOW_BLUSH_2.webp?v=1784656701&width=1500",
-      fallback: "https://images.unsplash.com/photo-1609357605129-26f69add5d6e?w=1600&auto=format&fit=crop&q=80",
-      title: "Luxury pret",
-      subtitle: "Intricate hand-finished embroideries"
+      url: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=85&w=2000&auto=format&fit=crop",
+      tag: "SUMMER PRET '26",
+      title: "Breathable Swiss Lawn",
+      description: "Delicate Chikankari embroidery and airy premium cotton cambric, tailored for effortless grace in warm summer afternoons.",
+      link: "/products?category=Summer%20Collection%2026",
+      btn: "Shop Summer '26"
     },
     {
-      url: "https://pezwaan.com/cdn/shop/files/WhatsApp_Image_2024-10-09_at_10.06.03_PM.jpg?v=1728697705&width=1200",
-      fallback: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1600&auto=format&fit=crop&q=80",
-      title: "Casual couture",
-      subtitle: "Thoughtfully crafted everyday grace"
+      url: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=85&w=2000&auto=format&fit=crop",
+      tag: "READY TO WEAR EDIT",
+      title: "Artisanal Silk & Kaftans",
+      description: "Contemporary cuts and flowing drape meeting intricate Pakistani heritage detailing for everyday modern royalty.",
+      link: "/products?category=Ready%20to%20Wear",
+      btn: "Discover Ready To Wear"
     }
   ];
 
@@ -45,7 +51,7 @@ const Home = () => {
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 6000);
     return () => clearInterval(slideTimer);
   }, [slides.length]);
 
@@ -98,39 +104,61 @@ const Home = () => {
   return (
     <div className="pt-24 bg-[#FAF9F5] dark:bg-slate-950 min-h-screen">
 
-      {/* 1. HERO IMAGE SLIDER (Full Width Screen Animation) */}
-      <section className="relative w-full h-[70vh] md:h-[88vh] bg-neutral-950 overflow-hidden">
+      {/* 1. HERO IMAGE SLIDER (Full Width Screen Luxury Animation) */}
+      <section className="relative w-full h-[82vh] md:h-[92vh] bg-neutral-950 overflow-hidden">
         {slides.map((slide, idx) => (
           <div
             key={idx}
             className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
-              currentSlide === idx ? "opacity-100 scale-100 z-10" : "opacity-0 scale-98 z-0"
+              currentSlide === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           >
+            {/* Background image with subtle Ken-Burns zoom on active */}
             <img
               src={slide.url}
               alt={slide.title}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.target.src = slide.fallback;
-              }}
+              className={`w-full h-full object-cover object-center transition-transform duration-7000 ease-out ${
+                currentSlide === idx ? "scale-105" : "scale-100"
+              }`}
             />
-            {/* Soft dark filter overlay */}
-            <div className="absolute inset-0 bg-black/25"></div>
 
-            {/* Typography Overlay */}
-            <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-6">
-              <h2 className="text-[10px] md:text-xs font-bold uppercase tracking-[0.35em] text-gold mb-3.5 animate-pulse">
-                {slide.subtitle}
-              </h2>
-              <h1 className="text-4xl md:text-6xl font-light font-serif tracking-[0.2em] uppercase mb-7">
-                RajMeena <span className="font-serif italic font-light lowercase text-gold tracking-normal">couture</span>
+            {/* Multi-tier luxury dark gradient vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/60"></div>
+            <div className="absolute inset-0 bg-radial from-transparent via-transparent to-black/50"></div>
+
+            {/* Typography & CTA Overlay */}
+            <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-6 max-w-5xl mx-auto">
+              {/* Luxury gold badge with pulsing indicator */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 border border-gold/40 bg-black/45 backdrop-blur-md mb-6 shadow-2xl">
+                <span className="w-1.5 h-1.5 rounded-full bg-gold animate-ping" />
+                <span className="text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] text-gold">
+                  {slide.tag}
+                </span>
+              </div>
+
+              {/* Grand Serif Heading */}
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-light font-serif tracking-[0.14em] uppercase mb-4 leading-[1.1] drop-shadow-md">
+                {slide.title}
               </h1>
-              <Link to="/products">
-                <Button className="bg-black hover:bg-gold text-white hover:text-black rounded-none tracking-[0.25em] font-bold text-[10px] uppercase h-11 px-10 border border-black hover:border-gold cursor-pointer transition-all duration-300 shadow-md">
-                  Shop the Collection
-                </Button>
-              </Link>
+
+              {/* Editorial Subtitle */}
+              <p className="text-xs md:text-sm text-neutral-200 font-light max-w-xl mx-auto mb-9 tracking-wide leading-relaxed font-sans drop-shadow">
+                {slide.description}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap justify-center items-center gap-4">
+                <Link to={slide.link}>
+                  <Button className="bg-gold hover:bg-white text-black font-bold tracking-[0.25em] text-[11px] uppercase h-12 px-9 rounded-none border border-gold hover:border-white transition-all duration-300 shadow-2xl cursor-pointer hover:scale-105">
+                    {slide.btn}
+                  </Button>
+                </Link>
+                <Link to="/products">
+                  <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/40 backdrop-blur-md tracking-[0.25em] text-[11px] uppercase h-12 px-8 rounded-none transition-all duration-300 cursor-pointer">
+                    View Catalog
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         ))}
@@ -138,31 +166,36 @@ const Home = () => {
         {/* Carousel Prev/Next Buttons */}
         <button
           onClick={prevSlide}
-          className="absolute left-5 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gold transition-colors rounded-none outline-none p-1 bg-black/5 hover:bg-black/15 cursor-pointer"
+          className="absolute left-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gold transition-all duration-300 rounded-none p-3 bg-black/30 hover:bg-black/60 backdrop-blur-sm border border-white/10 hover:border-gold/50 cursor-pointer group"
           aria-label="Previous slide"
         >
-          <ChevronLeft size={30} />
+          <ChevronLeft size={24} className="group-hover:-translate-x-0.5 transition-transform" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-5 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gold transition-colors rounded-none outline-none p-1 bg-black/5 hover:bg-black/15 cursor-pointer"
+          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 text-white hover:text-gold transition-all duration-300 rounded-none p-3 bg-black/30 hover:bg-black/60 backdrop-blur-sm border border-white/10 hover:border-gold/50 cursor-pointer group"
           aria-label="Next slide"
         >
-          <ChevronRight size={30} />
+          <ChevronRight size={24} className="group-hover:translate-x-0.5 transition-transform" />
         </button>
 
-        {/* Slider Indicator Dots */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex gap-2.5">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              className={`h-1.5 transition-all duration-300 cursor-pointer ${
-                currentSlide === idx ? "bg-gold w-5" : "bg-white/40 w-1.5"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+        {/* Bottom Slide Counter & Indicators */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3">
+          <div className="flex gap-2">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-1 transition-all duration-500 cursor-pointer ${
+                  currentSlide === idx ? "bg-gold w-10" : "bg-white/30 w-4 hover:bg-white/60"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+          <span className="text-[10px] text-white/70 font-mono tracking-widest uppercase">
+            0{currentSlide + 1} / 0{slides.length}
+          </span>
         </div>
       </section>
 
