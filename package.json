@@ -6,6 +6,7 @@
     "backend"
   ],
   "scripts": {
-    "build": "npm run build -w frontend"
+    "build": "npm run build --prefix frontend",
+    "vercel-build": "npm run build --prefix frontend"
   }
 }
