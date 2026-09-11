@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 
@@ -16,6 +17,7 @@ const Footer = () => {
   };
 
   const policies = [
+    { label: "CUSTOMER REVIEWS", to: "/reviews" },
     { label: "PRIVACY POLICY", to: "/faq" },
     { label: "TERMS & SERVICE", to: "/faq" },
     { label: "EXCHANGE POLICY", to: "/faq" },
@@ -46,12 +48,12 @@ const Footer = () => {
             <ul className="space-y-3 pl-0">
               {policies.map((p, idx) => (
                 <li key={idx}>
-                  <a 
-                    href={p.to} 
+                  <Link 
+                    to={p.to} 
                     className="text-xs text-slate-400 hover:text-white transition-colors duration-200 block tracking-wider"
                   >
                     {p.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
