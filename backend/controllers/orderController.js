@@ -10,10 +10,6 @@ export const createOrder = async (req, res) => {
             orderItems,
             shippingAddress,
             paymentMethod,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice
         } = req.body;
 
         if (!orderItems || orderItems.length === 0) {
@@ -23,7 +19,8 @@ export const createOrder = async (req, res) => {
             });
         }
 
-        // Verify and update stocks
+        // Verify stock and recompute prices from DB
+        let computedItemsPrice = 0;
         for (const item of orderItems) {
             const product = await Product.findById(item.product);
             if (!product) {
@@ -38,10 +35,17 @@ export const createOrder = async (req, res) => {
                     message: `Insufficient stock for ${item.name}. Available: ${product.stock}`
                 });
             }
+            // Use DB price, not client price
+            computedItemsPrice += product.price * item.qty;
             // Reduce stock
             product.stock -= item.qty;
             await product.save();
         }
+
+        // Server-side price computation (10% tax, free shipping over 1000)
+        const taxPrice = parseFloat((computedItemsPrice * 0.1).toFixed(2));
+        const shippingPrice = computedItemsPrice > 1000 ? 0 : 100;
+        const totalPrice = parseFloat((computedItemsPrice + taxPrice + shippingPrice).toFixed(2));
 
         // Create Order
         const order = new Order({
@@ -49,7 +53,7 @@ export const createOrder = async (req, res) => {
             orderItems,
             shippingAddress,
             paymentMethod,
-            itemsPrice,
+            itemsPrice: parseFloat(computedItemsPrice.toFixed(2)),
             taxPrice,
             shippingPrice,
             totalPrice,

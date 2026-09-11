@@ -11,8 +11,14 @@ import cors from 'cors'
 const app = express()
 
 app.use(express.json({ limit: '10mb' }));
+
+// Restrict CORS to configured origin in production
+const allowedOrigin = process.env.NODE_ENV === 'production'
+    ? process.env.FRONTEND_URL
+    : (process.env.DEV_FRONTEND_URL || true);
+
 app.use(cors({
-    origin: true,
+    origin: allowedOrigin,
     credentials: true
 }))
 
@@ -25,7 +31,7 @@ app.use(async (req, res, next) => {
         console.error('DB connection error:', err.message);
         return res.status(500).json({
             success: false,
-            message: 'Database connection failed: ' + err.message
+            message: 'Database connection failed'
         });
     }
 });
@@ -37,29 +43,13 @@ app.use('/api/v1/user', userRoute)
 app.use('/api/v1/product', productRoutes)
 app.use('/api/v1/order', orderRoutes)
 
-app.get('/api/v1/healthcheck', async (req, res) => {
-    const mongoose = await import('mongoose');
+// Minimal health check — no sensitive info exposed
+app.get('/api/v1/healthcheck', (req, res) => {
     res.json({
         success: true,
-        mongo_uri_set: !!process.env.MONGO_URI,
-        mongo_uri_preview: process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 40) + '...' : 'NOT SET',
-        readyState: mongoose.default.connection.readyState,
-        node_env: process.env.NODE_ENV || 'not set'
+        status: 'healthy',
+        timestamp: new Date()
     });
-});
-
-app.get('/api/v1/debug', async (req, res) => {
-    try {
-        await connectDB();
-        const mongoose = await import('mongoose');
-        res.json({
-            success: true,
-            readyState: mongoose.default.connection.readyState,
-            host: mongoose.default.connection.host
-        });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message });
-    }
 });
 
 // Only listen locally

@@ -1,9 +1,9 @@
-import user  from "../models/userModel.js";
-import bcrypt from "bcryptjs"
-import jwt, { decode } from "jsonwebtoken"
+import crypto from 'crypto';
+import user from "../models/userModel.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { verifyEmail } from "../emailVerify/verifyEmail.js";
 import { Session } from "../models/sessionModel.js";
-import { json, response } from "express";
 import { sendOTPMail } from "../emailVerify/sendOTPMail.js";
 export const register = async(req, res)=>{
     try {
@@ -31,11 +31,12 @@ export const register = async(req, res)=>{
         const token = jwt.sign({id:newUser._id}, process.env.SECRET_KEY,{expiresIn:'10m'})
         verifyEmail(token, email)
         newUser.token= token
-        await newUser.save()
+        await newUser.save();
+const safeUser = (({password, token, otp, otpExpiry, resetPasswordToken, resetPasswordExpiry, ...rest}) => rest)(newUser.toObject());
         return res.status(201).json({
             success:true,
             message:'user registered successfully',
-            user:newUser
+            user:safeUser
         })
     } catch (error) {
         res.status(500).json({
@@ -162,10 +163,11 @@ export const login = async(req, res)=>{
       }
 
       await Session.create({userId:existingUser._id})
+      const safeLoginUser = (({password, token, otp, otpExpiry, resetPasswordToken, resetPasswordExpiry, ...rest}) => rest)(existingUser.toObject());
       return res.status(200).json({
         success:true,
         message:`Welcome back, ${existingUser.firstName}`,
-        user:existingUser,
+        user:safeLoginUser,
         accessToken,
         refreshToken
       })
@@ -260,10 +262,16 @@ export const verifyOTP= async(req, res)=>{
     }
     User.otp=null
     User.otpExpiry=null
+    // Generate a secure reset token valid for 10 minutes
+    const plainToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(plainToken).digest('hex');
+    User.resetPasswordToken = hashedToken;
+    User.resetPasswordExpiry = new Date(Date.now() + 10 * 60 * 1000);
     await User.save()
     return res.status(200).json({
         success:true,
-        message:'otp verified sucessfully'
+        message:'otp verified successfully',
+        resetToken: plainToken
     })
     } catch (error) {
         return res.status(500).json({
@@ -274,76 +282,106 @@ export const verifyOTP= async(req, res)=>{
 }
 export const changePassword = async(req, res)=>{
     try {
-        const {newPassword,confirmPassword}=req.body;
-        const {email}=req.params;
-        const User= await user.findOne({email})
+        const {resetToken, newPassword, confirmPassword} = req.body;
+        const {email} = req.params;
+
+        if(!resetToken || !newPassword || !confirmPassword){
+            return res.status(400).json({
+                success:false,
+                message:"resetToken, newPassword, and confirmPassword are all required"
+            });
+        }
+        if(newPassword !== confirmPassword){
+            return res.status(400).json({
+                success:false,
+                message:"Passwords do not match"
+            });
+        }
+        if(newPassword.length < 8){
+            return res.status(400).json({
+                success:false,
+                message:"Password must be at least 8 characters"
+            });
+        }
+
+        const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        const User = await user.findOne({
+            email,
+            resetPasswordToken: hashedToken,
+            resetPasswordExpiry: { $gt: new Date() }
+        });
         if(!User){
             return res.status(400).json({
                 success:false,
-                message:"User not found"
-            })
+                message:"Invalid or expired reset token"
+            });
         }
-        if(!newPassword||!confirmPassword){
-             return res.status(400).json({
-                success:false,
-                message:"all feilds are required"
-        })
-        }
-        if(newPassword!==confirmPassword){
-            return res.status(400).json({
-                success:false,
-                message:"password not match"
-        })
-        }
-        const hashPassword=await bcrypt.hash(newPassword, 10)
-        User.password=hashPassword
-        await User.save()
+
+        User.password = await bcrypt.hash(newPassword, 10);
+        User.resetPasswordToken = null;
+        User.resetPasswordExpiry = null;
+        await User.save();
         return res.status(200).json({
             success:true,
-            message:"password change successfully"
-        })
+            message:"Password changed successfully"
+        });
     } catch (error) {
-         return res.status(500).json({
+        return res.status(500).json({
             success:false,
             message:error.message
-     } )
+        });
     }
 }
-export const allUser = async(_, res)=>{
+export const allUser = async(req, res)=>{
     try {
-        const users= await user.find()
-         return res.status(200).json({
+        const page = Math.max(1, parseInt(req.query.page) || 1);
+        const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+        const skip = (page - 1) * limit;
+        const [users, totalUsers] = await Promise.all([
+            user.find().select('-password -token -otp -otpExpiry -resetPasswordToken -resetPasswordExpiry').skip(skip).limit(limit),
+            user.countDocuments()
+        ]);
+        return res.status(200).json({
             success:true,
-            users
-     } )
+            users,
+            totalUsers,
+            totalPages: Math.ceil(totalUsers / limit),
+            currentPage: page
+        });
     } catch (error) {
-         return res.status(500).json({
+        return res.status(500).json({
             success:false,
             message:error.message
-     } )
+        });
     }
 }
 
 export const getUserbyId= async(req, res)=>{
     try {
         const {userId}= req.params;
-        const User= await user.findById(userId).select("-password -otp -otpExpiry -token")
+        // Only allow the user themselves or an admin
+        if(req.user._id.toString() !== userId && req.user.role !== 'admin'){
+            return res.status(403).json({
+                success:false,
+                message:"Forbidden"
+            });
+        }
+        const User= await user.findById(userId).select("-password -otp -otpExpiry -token -resetPasswordToken -resetPasswordExpiry")
         if(!User){
             return res.status(404).json({
                 success:false,
                 message:"user not found"
             })
         }
-         return res.status(200).json({
-                success:true,
-                User,
-            })
-
+        return res.status(200).json({
+            success:true,
+            User,
+        })
     } catch (error) {
         return res.status(500).json({
             success:false,
             message:error.message
-     } )
+        })
     }
 }
 
