@@ -20,7 +20,7 @@ const Products = () => {
     const [sort, setSort] = useState("newest");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-    const categories = ["All", "Ready to Wear", "Luxury Pret", "Casual Wear", "Unstitched"];
+    const categories = ["All", "Summer Collection 26", "Ready to Wear", "Luxury Pret", "Casual Wear", "Unstitched"];
 
     const fetchProducts = async () => {
         try {
