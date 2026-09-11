@@ -74,12 +74,12 @@ const Footer = () => {
               <li className="flex items-center gap-2">
                 <Phone size={13} className="text-white shrink-0" />
                 <a 
-                  href="https://wa.me/923001234567" 
+                  href="https://wa.me/923159068572" 
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="hover:text-white transition-colors"
                 >
-                  +92 (300) 123-4567
+                  +92 (315) 906-8572
                 </a>
               </li>
               <li className="flex items-start gap-2">

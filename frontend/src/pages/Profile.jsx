@@ -311,7 +311,7 @@ const Profile = () => {
                                     <Input
                                         id="phoneNo"
                                         name="phoneNo"
-                                        placeholder="+92 (300) 123-4567"
+                                        placeholder="+92 (315) 906-8572"
                                         value={formData.phoneNo}
                                         onChange={handleInputChange}
                                         className="rounded-none border-slate-200 focus:border-black"

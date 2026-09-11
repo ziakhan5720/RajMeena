@@ -508,7 +508,7 @@ const Home = () => {
       {/* 6. Sticky WhatsApp Floating Badge */}
 
       <a
-        href="https://wa.me/923001234567?text=Hi%20RajMeena%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20your%20latest%20outfits."
+        href="https://wa.me/923159068572?text=Hi%20RajMeena%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20your%20latest%20outfits."
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] hover:bg-[#20ba59] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 flex items-center justify-center cursor-pointer"

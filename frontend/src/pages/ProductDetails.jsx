@@ -236,7 +236,7 @@ const ProductDetails = () => {
 
                                     {/* Order via WhatsApp Button */}
                                     <a
-                                        href={`https://wa.me/923001234567?text=Hello%2C%20I%20would%20like%20to%20order%2520this%20outfit%20from%20RajMeena%20Couture%3A%0A%0AProduct%3A%20${encodeURIComponent(product.name)}%0ASize%3A%20${size}%0AQuantity%3A%20${qty}%0APrice%3A%20Rs.%20${product.price}%0ALink%3A%20${encodeURIComponent(window.location.href)}`}
+                                        href={`https://wa.me/923159068572?text=Hello%2C%20I%20would%20like%20to%20order%2520this%20outfit%20from%20RajMeena%20Couture%3A%0A%0AProduct%3A%20${encodeURIComponent(product.name)}%0ASize%3A%20${size}%0AQuantity%3A%20${qty}%0APrice%3A%20Rs.%20${product.price}%0ALink%3A%20${encodeURIComponent(window.location.href)}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="w-full flex items-center justify-center gap-2 border border-slate-900 dark:border-white text-slate-900 dark:text-white hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 font-bold h-11 rounded-none text-xs uppercase tracking-wider cursor-pointer"

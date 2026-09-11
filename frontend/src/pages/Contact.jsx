@@ -64,8 +64,8 @@ const Contact = () => {
                                 <Phone size={18} />
                             </div>
                             <div>
-                                <h4 className="font-bold text-slate-855 dark:text-white text-xs uppercase tracking-wider">Call Support</h4>
-                                <p className="text-xs text-slate-400 font-light mt-0.5">+92 (300) 123-4567</p>
+                                <h4 className="font-bold text-slate-855 dark:text-white text-xs uppercase tracking-wider">Call / WhatsApp</h4>
+                                <a href="https://wa.me/923159068572" target="_blank" rel="noopener noreferrer" className="text-xs text-slate-400 hover:text-black dark:hover:text-white font-light mt-0.5 block transition-colors">+92 (315) 906-8572</a>
                             </div>
                         </div>
 
