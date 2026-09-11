@@ -15,6 +15,7 @@ import AdminDashboard from './pages/AdminDashboard'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import FAQ from './pages/FAQ'
+import Reviews from './pages/Reviews'
 import Footer from './components/footer'
 
 const router= createBrowserRouter([
@@ -77,6 +78,10 @@ const router= createBrowserRouter([
   {
     path: "/faq",
     element: <><Navbar/><FAQ/><Footer/></>
+  },
+  {
+    path: "/reviews",
+    element: <><Navbar/><Reviews/><Footer/></>
   }
 ])
 

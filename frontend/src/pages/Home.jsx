@@ -382,7 +382,131 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 5. Sticky WhatsApp Floating Badge */}
+      {/* 5. CUSTOMER REVIEWS SECTION */}
+      <section className="py-24 bg-white dark:bg-slate-900 border-t border-slate-200/40 dark:border-slate-800/80">
+        <div className="max-w-7xl mx-auto px-6">
+
+          {/* Section Header */}
+          <div className="text-center space-y-2 mb-4">
+            <p className="text-[10px] text-gold font-bold tracking-[0.3em] uppercase">Customer Stories</p>
+            <h2 className="text-3xl font-light tracking-wide font-serif text-slate-900 dark:text-white uppercase">
+              What Our Clients Say
+            </h2>
+          </div>
+
+          {/* Overall Star Rating */}
+          <div className="flex flex-col items-center gap-1 mb-14">
+            <div className="flex gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <p className="text-[11px] text-slate-400 uppercase tracking-widest font-light">4.9 · 6 Verified Reviews</p>
+          </div>
+
+          {/* Three Featured Reviews */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                name: "Aisha Malik",
+                location: "Lahore",
+                rating: 5,
+                title: "Absolutely Regal",
+                body: "The Velvet Luxe three-piece is everything I dreamed of. The embroidery is flawless and the fabric drapes like a dream. Received so many compliments at my cousin's wedding.",
+                avatar: "AM",
+                product: "Royal Velvet Luxe (3-Piece)",
+                date: "August 2026"
+              },
+              {
+                name: "Fatima Noor",
+                location: "Karachi",
+                rating: 5,
+                title: "Worth Every Rupee",
+                body: "I ordered the Summer Breeze Chiffon and it exceeded all my expectations. The stitching is immaculate, the colour matches perfectly, and delivery was swift.",
+                avatar: "FN",
+                product: "Summer Breeze Chiffon (3-Piece)",
+                date: "July 2026"
+              },
+              {
+                name: "Sara Hussain",
+                location: "Islamabad",
+                rating: 5,
+                title: "Best Boutique Online",
+                body: "RajMeena stands apart from every other online store. Premium fabric, beautiful packaging, and incredible customer service. The Emerald Silk Kurta is my new favourite.",
+                avatar: "SH",
+                product: "Emerald Silk Kurta (1-Piece)",
+                date: "August 2026"
+              }
+            ].map((review, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col bg-[#FAF9F5] dark:bg-slate-950 border border-slate-200 dark:border-slate-800/80 p-7 relative hover:shadow-md transition-shadow duration-300"
+              >
+                {/* Quote mark */}
+                <svg className="absolute top-5 right-5 w-8 h-8 text-gold/20 fill-current" viewBox="0 0 24 24">
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+                </svg>
+
+                {/* Stars */}
+                <div className="flex gap-0.5 mb-4">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-serif text-base font-semibold text-slate-900 dark:text-white tracking-wide mb-2">
+                  "{review.title}"
+                </h3>
+
+                {/* Body */}
+                <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed font-light flex-grow">
+                  {review.body}
+                </p>
+
+                {/* Product tag */}
+                <span className="mt-5 inline-block text-[9px] font-bold uppercase tracking-widest text-gold border border-gold/30 px-2 py-0.5 w-fit">
+                  {review.product}
+                </span>
+
+                {/* Author */}
+                <div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gold/50 to-amber-700/60 flex items-center justify-center text-white font-bold text-xs shrink-0">
+                    {review.avatar}
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{review.name}</p>
+                      <span className="text-[9px] font-bold uppercase tracking-widest text-emerald-600 bg-emerald-50 dark:bg-emerald-950/30 px-1.5 py-0.5">
+                        ✓ Verified
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-400">{review.location} · {review.date}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap justify-center gap-4 mt-12">
+            <Link to="/reviews">
+              <Button className="bg-black hover:bg-gold text-white hover:text-black rounded-none tracking-[0.25em] font-bold text-[10px] uppercase h-12 px-10 border border-black hover:border-gold cursor-pointer transition-all duration-300">
+                All Reviews
+              </Button>
+            </Link>
+            <Link to="/reviews?write=true">
+              <Button className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 hover:border-gold hover:text-gold rounded-none tracking-[0.25em] font-bold text-[10px] uppercase h-12 px-10 cursor-pointer transition-all duration-300">
+                Give a Review
+              </Button>
+            </Link>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. Sticky WhatsApp Floating Badge */}
+
       <a
         href="https://wa.me/923001234567?text=Hi%20RajMeena%20Couture%2C%20I%20would%20like%20to%20inquire%20about%20your%20latest%20outfits."
         target="_blank"

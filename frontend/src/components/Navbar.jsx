@@ -70,6 +70,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "All Outfits", path: "/products" },
+    { name: "Reviews", path: "/reviews" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
     { name: "FAQ", path: "/faq" },
