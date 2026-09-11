@@ -36,12 +36,12 @@ const AdminDashboard = () => {
         name: "",
         description: "",
         price: "",
-        category: "Laptops",
+        category: "Ready to Wear",
         image: "",
         stock: ""
     });
 
-    const categories = ["Laptops", "Smartphones", "Headphones", "Smartwatches", "Accessories"];
+    const categories = ["Ready to Wear", "Luxury Pret", "Casual Wear", "Unstitched", "Summer Collection 26"];
 
     const fetchAdminProducts = async () => {
         try {
