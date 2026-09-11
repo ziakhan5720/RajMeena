@@ -8,7 +8,7 @@ try {
     console.warn("Could not set custom DNS servers:", err.message);
 }
 
-const ATLAS_URI = "mongodb+srv://rizwanshahani432_db_user:CcdVdPzYRNHPvJox@cluster0.rqiwjon.mongodb.net/aura-yt?appName=Cluster0";
+const ATLAS_URI = "mongodb+srv://ziakhan5720_db_user:iby4149LAInJ2gMJ@cluster0.s62wpdx.mongodb.net/rajmeena?appName=Cluster0";
 
 const connectDB = async () => {
     if (mongoose.connection.readyState === 1) return; // already connected

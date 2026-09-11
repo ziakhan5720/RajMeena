@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Product from '../models/productModel.js';
 
-const ATLAS_URI = "mongodb+srv://rizwanshahani432_db_user:CcdVdPzYRNHPvJox@cluster0.rqiwjon.mongodb.net/aura-yt?appName=Cluster0";
+const ATLAS_URI = "mongodb+srv://ziakhan5720_db_user:iby4149LAInJ2gMJ@cluster0.s62wpdx.mongodb.net/rajmeena?appName=Cluster0";
 
 const products = [
     {
