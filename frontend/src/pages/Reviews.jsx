@@ -140,7 +140,7 @@ const ReviewCard = ({ review, featured = false }) => (
 );
 
 const WriteReviewModal = ({ onClose }) => {
-  const { user } = useSelector((s) => s.auth);
+  const user = useSelector((s) => s.user?.user);
   const [form, setForm] = useState({ rating: 5, title: "", body: "", product: "" });
   const [submitted, setSubmitted] = useState(false);
 
